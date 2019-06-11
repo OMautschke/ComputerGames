@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/player.gd" type="Script" id=1]
+[ext_resource path="res://textures/blue_square.png" type="Texture" id=2]
+[ext_resource path="res://character_sprites.tscn" type="PackedScene" id=3]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 40.0
+height = 180.0
+
+[node name="player" type="RigidBody2D"]
+mode = 2
+physics_material_override = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"__editor_plugin_screen__": "2D"
+}
+player_speed = 400
+jumpforce = 400
+acceleration = 8
+extra_gravity = 300
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 0, -100 )
+current = true
+zoom = Vector2( 2, 2 )
+smoothing_enabled = true
+smoothing_speed = 7.0
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 0, -25.8734 )
+enabled = true
+cast_to = Vector2( 0, 60 )
+
+[node name="rotate" type="Node2D" parent="."]
+
+[node name="player_sprite" type="Sprite" parent="rotate"]
+visible = false
+texture = ExtResource( 2 )
+
+[node name="player_sprite1" type="Sprite" parent="rotate"]
+visible = false
+position = Vector2( 43.32, -3.57628e-007 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 2 )
+
+[node name="character_sprites" parent="rotate" instance=ExtResource( 3 )]
+position = Vector2( 5.97079, -139.318 )
+scale = Vector2( 0.3, 0.3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 4.64916e-006, -140.915 )
+shape = SubResource( 2 )
+
