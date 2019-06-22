@@ -11,7 +11,8 @@ var derivatives = [ Vector2(1, 0),
 					Vector2(1, 1),
 					Vector2(1, -1),
 					Vector2(1, 0) ]
-var speed = 1
+var speed = 10
+var mode = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,13 +30,21 @@ func _process(delta):
 func setSpeed(s):
 	self.speed = s
 	
+func setMode(m):
+	self.mode = m
+	
 func move(time):
 	var h00 = 2 * pow(time, 3) - 3 * pow(time, 2) + 1
 	var h10 = -2 * pow(time, 3) + 3 * pow(time, 2)
 	var h01 = pow(time, 3) -2 * pow(time, 2) + time
 	var h11 = pow(time, 3) - pow(time, 2)
 	
-	for i in range(len(self.waypoints)):
+	var p0 = Vector2(0, 0)
+	var p1 = Vector2(0, 0)
+	var d0 = Vector2(0, 0)
+	var d1 = Vector2(0, 0)
+	
+	for i in range(self.waypoints.size()):
 		var next = 0
 		var prev = 0
 		if i == 0:
@@ -48,9 +57,20 @@ func move(time):
 			next = i + 1
 			prev = i - 1
 		
-		var p0 = self.waypoints[prev].position
-		var p1 = self.waypoints[next].position
-		var d0 = self.derivatives[prev] * self.speed
-		var d1 = self.derivatives[next] * self.speed
-		
-		self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
+		if (self.position.distance_to(self.waypoints[i].position)) < self.waypoints[prev].position.distance_to(self.waypoints[next].position):
+			p0 = self.waypoints[i].position
+
+			p1 = self.waypoints[next].position
+			
+			if self.mode == 0:
+				d0 = self.derivatives[i] * self.speed
+				d1 = self.derivatives[next] * self.speed
+			elif self.mode == 1:
+				var Tk = 0.5
+				d0 = Tk * (p1 - p0)
+				d1 = Tk * (p1 - p0)
+			break
+	self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
+
+	if self.position == self.waypoints[4].position:
+		self.position = Vector2(0, 250)
