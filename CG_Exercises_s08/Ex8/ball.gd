@@ -16,7 +16,7 @@ var mode = 0
 
 var prev = 0
 var next = 1
-var time = 0
+var time_com = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,8 +29,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	time += delta
-	move(delta)
+	time_com += delta
+	move(time_com)
 
 func setSpeed(s):
 	self.speed = s
@@ -38,7 +38,7 @@ func setSpeed(s):
 func setMode(m):
 	self.mode = m
 	
-func move(s):
+func move(time):
 	var h00 = 2 * pow(time, 3) - 3 * pow(time, 2) + 1
 	var h10 = -2 * pow(time, 3) + 3 * pow(time, 2)
 	var h01 = pow(time, 3) -2 * pow(time, 2) + time
