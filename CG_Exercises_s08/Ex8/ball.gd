@@ -16,6 +16,7 @@ var mode = 0
 
 var prev = 0
 var next = 1
+var time = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,6 +29,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	time += delta
 	move(delta)
 
 func setSpeed(s):
@@ -36,7 +38,7 @@ func setSpeed(s):
 func setMode(m):
 	self.mode = m
 	
-func move(time):
+func move(s):
 	var h00 = 2 * pow(time, 3) - 3 * pow(time, 2) + 1
 	var h10 = -2 * pow(time, 3) + 3 * pow(time, 2)
 	var h01 = pow(time, 3) -2 * pow(time, 2) + time
@@ -49,6 +51,7 @@ func move(time):
 	
 	self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
 	
-	print(h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1)
+	if (self.position.distance_to(self.waypoints[1].position)) < 0.01:
+		self.position = Vector2(0, 250)
 	
 	

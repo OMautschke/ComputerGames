@@ -49,4 +49,3 @@ texture = ExtResource( 2 )
 position = Vector2( 0, 250 )
 texture = ExtResource( 3 )
 script = ExtResource( 4 )
-
