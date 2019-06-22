@@ -11,7 +11,7 @@ var derivatives = [ Vector2(1, 0),
 					Vector2(1, 1),
 					Vector2(1, -1),
 					Vector2(1, 0) ]
-var speed = 10
+var speed = 100
 var mode = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -49,9 +49,10 @@ func move(time):
 		var prev = 0
 		if i == 0:
 			next = i + 1
-			prev = self.waypoints.size() - 1
+			#prev = self.waypoints.size() - 1
+			prev = 0
 		elif i == (self.waypoints.size() - 1):
-			next = 0
+			next = self.waypoints.size() - 1
 			prev = i - 1
 		else:
 			next = i + 1
@@ -69,8 +70,9 @@ func move(time):
 				var Tk = 0.5
 				d0 = Tk * (p1 - p0)
 				d1 = Tk * (p1 - p0)
+				
+			self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
 			break
-	self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
 
 	if self.position == self.waypoints[4].position:
 		self.position = Vector2(0, 250)
