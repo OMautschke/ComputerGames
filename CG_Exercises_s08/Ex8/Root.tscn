@@ -18,13 +18,16 @@ margin_right = 600.0
 margin_bottom = 100.0
 
 [node name="lineedit1" type="LineEdit" parent="panel2"]
-margin_right = 58.0
-margin_bottom = 24.0
+margin_left = 60.2936
+margin_top = -47.6002
+margin_right = 118.294
+margin_bottom = -23.6002
 
 [node name="lineedit2" type="LineEdit" parent="panel2"]
-margin_left = 1.0
-margin_right = 59.0
-margin_bottom = 24.0
+margin_left = 58.1202
+margin_top = -84.0937
+margin_right = 116.12
+margin_bottom = -60.0937
 
 [node name="sphere1" type="Sprite" parent="."]
 position = Vector2( 0, 250 )

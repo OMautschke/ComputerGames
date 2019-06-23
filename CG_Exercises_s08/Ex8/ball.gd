@@ -33,10 +33,11 @@ func _process(delta):
 	move(self.total_time)
 
 func setSpeed(s):
-	self.speed = s
+	self.speed = int(s)
+	print(self.speed)
 	
 func setMode(m):
-	self.mode = m
+	self.mode = int(m)
 	
 func move(time):
 	var next_time = time + 0.02
@@ -52,7 +53,7 @@ func move(time):
 
 	var dist = self.position.distance_to(self.waypoints[next].position)
 	
-	if dist  < 2.0:
+	if dist < 2.0:
 		self.next = next + 1 
 		self.prev = prev + 1
 		self.total_time = 0
