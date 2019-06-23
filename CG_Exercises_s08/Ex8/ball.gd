@@ -55,9 +55,13 @@ func move(time):
 
 	var target_vec = self.waypoints[next].position - self.position
 	
-	if abs(target_vec.angle_to(self.last_vec)) > 90:
+	print(abs(target_vec.angle_to(self.last_vec)))
+	
+	if abs(target_vec.angle_to(self.last_vec)) > 1:
 		next = next + 1 
 		prev = prev + 1
+	
+	self.last_vec = target_vec
 	
 	if next == self.waypoints.size():
 		prev = 0
