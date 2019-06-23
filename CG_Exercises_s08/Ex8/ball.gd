@@ -18,7 +18,6 @@ var total_time = 0
 var prev = 0
 var next = 1
 
-var last_vec = Vector2(0, 0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,9 +26,6 @@ func _ready():
 	self.waypoints.append(self.get_parent().get_node("sphere3"))
 	self.waypoints.append(self.get_parent().get_node("sphere4"))
 	self.waypoints.append(self.get_parent().get_node("sphere5"))
-	
-	self.last_vec = self.waypoints[next].position - self.position
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -43,29 +39,27 @@ func setMode(m):
 	self.mode = m
 	
 func move(time):
-	var h00 = 2 * pow(time, 3) - 3 * pow(time, 2) + 1
-	var h10 = -2 * pow(time, 3) + 3 * pow(time, 2)
-	var h01 = pow(time, 3) -2 * pow(time, 2) + time
-	var h11 = pow(time, 3) - pow(time, 2)
+	var next_time = time + 0.02
+	var h00 = 2 * pow(next_time, 3) - 3 * pow(next_time, 2) + 1
+	var h10 = -2 * pow(next_time, 3) + 3 * pow(next_time, 2)
+	var h01 = pow(next_time, 3) -2 * pow(next_time, 2) + next_time
+	var h11 = pow(next_time, 3) - pow(next_time, 2)
 	
 	var p0 = Vector2(0, 0)
 	var p1 = Vector2(0, 0)
 	var d0 = Vector2(0, 0)
 	var d1 = Vector2(0, 0)
 
-	var target_vec = self.waypoints[next].position - self.position
+	var dist = self.position.distance_to(self.waypoints[next].position)
 	
-	print(abs(target_vec.angle_to(self.last_vec)))
-	
-	if abs(target_vec.angle_to(self.last_vec)) > 1:
-		next = next + 1 
-		prev = prev + 1
-	
-	self.last_vec = target_vec
+	if dist  < 2.0:
+		self.next = next + 1 
+		self.prev = prev + 1
+		self.total_time = 0
 	
 	if next == self.waypoints.size():
-		prev = 0
-		next = 1
+		self.prev = 0
+		self.next = 1
 		self.position = self.waypoints[0].position
 
 	p0 = self.waypoints[prev].position
