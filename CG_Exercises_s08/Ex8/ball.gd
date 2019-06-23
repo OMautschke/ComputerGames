@@ -15,6 +15,11 @@ var speed = 100
 var mode = 0
 var total_time = 0
 
+var prev = 0
+var next = 1
+
+var last_vec = Vector2(0, 0)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.waypoints.append(self.get_parent().get_node("sphere1"))
@@ -22,6 +27,8 @@ func _ready():
 	self.waypoints.append(self.get_parent().get_node("sphere3"))
 	self.waypoints.append(self.get_parent().get_node("sphere4"))
 	self.waypoints.append(self.get_parent().get_node("sphere5"))
+	
+	self.last_vec = self.waypoints[next].position - self.position
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -46,28 +53,30 @@ func move(time):
 	var d0 = Vector2(0, 0)
 	var d1 = Vector2(0, 0)
 
-	for i in range(self.waypoints.size()):
-		var next = i + 1
-		var prev = i
-		
-		if next == self.waypoints.size():
-			next = 0
+	var target_vec = self.waypoints[next].position - self.position
+	
+	if abs(target_vec.angle_to(self.last_vec)) > 90:
+		next = next + 1 
+		prev = prev + 1
+	
+	if next == self.waypoints.size():
+		prev = 0
+		next = 1
+		self.position = self.waypoints[0].position
 
-		if (self.position.distance_to(self.waypoints[i].position)) < self.waypoints[prev].position.distance_to(self.waypoints[next].position):
-			p0 = self.waypoints[i].position
-
-			p1 = self.waypoints[next].position
+	p0 = self.waypoints[prev].position
+	p1 = self.waypoints[next].position
 			
-			if self.mode == 0:
-				d0 = self.derivatives[i] * self.speed
-				d1 = self.derivatives[next] * self.speed
-			elif self.mode == 1:
-				var Tk = 0.5
-				d0 = Tk * (p1 - p0)
-				d1 = Tk * (p1 - p0)
+	if self.mode == 0:
+		d0 = self.derivatives[prev] * self.speed
+		d1 = self.derivatives[next] * self.speed
+	elif self.mode == 1:
+		var Tk = 0.5
+		d0 = Tk * (p1 - p0)
+		d1 = Tk * (p1 - p0)
 				
-			self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
-			break
+	self.position = h00 * p0 + h10 * p1 + h01 * d0 + h11 * d1
+	
 
 	#if self.position == self.waypoints[4].position:
 	#	self.position = Vector2(0, 250)
