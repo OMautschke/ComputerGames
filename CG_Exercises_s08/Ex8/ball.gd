@@ -47,17 +47,11 @@ func move(time):
 	var d1 = Vector2(0, 0)
 
 	for i in range(self.waypoints.size()):
-		var next = 0
-		var prev = 0
-		if i == 0:
-			next = i + 1
-			prev = 0
-		elif i == (self.waypoints.size() - 1):
-			next = self.waypoints.size() - 1
-			prev = i
-		else:
-			next = i + 1
-			prev = i
+		var next = i + 1
+		var prev = i
+		
+		if next == self.waypoints.size():
+			next = 0
 
 		if (self.position.distance_to(self.waypoints[i].position)) < self.waypoints[prev].position.distance_to(self.waypoints[next].position):
 			p0 = self.waypoints[i].position
