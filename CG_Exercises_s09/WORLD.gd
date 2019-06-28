@@ -59,7 +59,7 @@ func _inverseKinematic(delta):
 	J.y      = Vector2(-l2*sin(d1 + d2) - l3*sin(d1 + d2 + d3),              l2*cos(d1 + d2) + l3*cos(d1 + d2 + d3))
 	J.origin = Vector2(-l3*sin(d1 + d2 + d3),                                l3*cos(d1 + d2 + d3))
 
-	I = J.translated(Vector2(1, 1)) * (J * J.translated(Vector2(1, 1))).affine_inverse()
+	I = (J.translated(Vector2(1, 1)) * (J * J.translated(Vector2(1, 1))).inverse())
 
 	# Hint: because of the matrix definition of Transform2D compute the transpose matrix of J here 
 	# and switch the indices later
