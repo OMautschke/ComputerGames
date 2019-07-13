@@ -44,34 +44,48 @@ bool AStar::computePath()
 {
 	//== Your code here (you may add other functions when necessary) =====
 	openList.push_back(std::pair<Node*, int>(start, start->g + start->h));
-	printOpenList();
 
 	while (true)
 	{
 		if (openList.empty())
 		{
-			std::cout << "No existing path" << std::endl;
 			return false;
 		}
 		currentNode = openList.back().first;
 		for (auto& n : openList.back().first->neighbors)
 		{
-			std::string name = n.first->name;
-			std::cout << "Name: " << currentNode->name << std::endl;
 			int g = currentNode->g + n.second;	// g: cost of the path from start
-			int h = n.first->h;				// h: heuristic
+			int h = n.first->h;					// h: heuristic
 			int f = g + h;
 
-			if (openList.back().second > f)
+			if (nodeInClosedList(n.first))
+			{
+				continue;
+			}
+
+			if (nodeInOpenList(n.first))
+			{
+				if (openList.back().second > f)
+				{
+					n.first->g = g;		// g: cost of the path from start
+					n.first->h = h;		// h: heuristic
+					n.second = g + f;	// f: cost function
+					//n.first->lastNode = openList.back().first;
+				}
+			}
+			else
 			{
 				n.first->g = g;		// g: cost of the path from start
 				n.first->h = h;		// h: heuristic
 				n.second = g + f;	// f: cost function
-			}
-			n.first->lastNode = openList.back().first;
 
-			auto it = openList.begin();
-			openList.insert(it, std::pair<Node*, int>(n.first, n.second));
+				//n.first->lastNode = openList.back().first;
+
+				auto it = openList.begin();
+				openList.insert(it, std::pair<Node*, int>(n.first, n.second));
+
+				printOpenList();
+			}
 		}
 		closeList.push_back(currentNode);
 		openList.pop_back();
@@ -81,13 +95,44 @@ bool AStar::computePath()
 			return true;
 		}
 		std::sort(openList.begin(), openList.end(), openListSort);
-		printOpenList();
+		currentNode->lastNode = openList.back().first;
+	}
+}
+
+bool AStar::nodeInOpenList(Node* n)
+{
+	for (auto& e : openList)
+	{
+		if (n->name.compare(e.first->name) == 0)
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+}
+
+bool AStar::nodeInClosedList(Node* n)
+{
+	for (auto& e : closeList)
+	{
+		if (n->name.compare(e->name) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 
 void AStar::printPath()
 {
 	Node* next = target;
+	int i = 0;
 	while (next != NULL)
 	{
 		std::cout << next->name.c_str() << " " << next->g << std::endl;

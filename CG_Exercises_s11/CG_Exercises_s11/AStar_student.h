@@ -63,6 +63,9 @@ class AStar
 	//Close list of nodes
 	std::vector<Node*> closeList;
 
+	bool nodeInOpenList(Node* n);
+	bool nodeInClosedList(Node* n);
+
 	//Sorting function, call "std::sort(openList.begin(), openList.end(), openListSort);"
 	//each time when updating the open list
 	struct {
