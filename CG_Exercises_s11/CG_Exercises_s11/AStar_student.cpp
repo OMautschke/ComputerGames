@@ -1,3 +1,16 @@
+/*
+Name: Sebastian Hegmann
+Fakultät : Mathematik und Informatik
+Studiengang : Angewandte Informatik
+Matrikelnummer : 3539941
+
+coauthor :
+	Name : Oliver Mautschke
+	Fakultät : Mathematik und Informatik
+	Studiengang : Angewandte Informatik
+	Matrikelnummer : 3538495
+*/
+
 #include "AStar_student.h"
 #include <iostream>
 
@@ -63,6 +76,11 @@ bool AStar::computePath()
 				continue;
 			}
 
+			if ((n.first->lastNode == NULL) && (n.first->name.compare(start->name) != 0))
+			{
+				n.first->lastNode = currentNode;
+			}
+
 			if (nodeInOpenList(n.first))
 			{
 				if (openList.back().second > f)
@@ -70,7 +88,6 @@ bool AStar::computePath()
 					n.first->g = g;		// g: cost of the path from start
 					n.first->h = h;		// h: heuristic
 					n.second = g + f;	// f: cost function
-					//n.first->lastNode = openList.back().first;
 				}
 			}
 			else
@@ -79,23 +96,22 @@ bool AStar::computePath()
 				n.first->h = h;		// h: heuristic
 				n.second = g + f;	// f: cost function
 
-				//n.first->lastNode = openList.back().first;
-
 				auto it = openList.begin();
-				openList.insert(it, std::pair<Node*, int>(n.first, n.second));
+				//std::cout << "insesrt: " << n.first->name << std::endl;
+				openList.insert(it, std::make_pair(n.first, n.second));
 
-				printOpenList();
+				//printOpenList();
 			}
 		}
 		closeList.push_back(currentNode);
 		openList.pop_back();
+		std::sort(openList.begin(), openList.end(), openListSort);
+
 		if (currentNode == target)
 		{
-			std::cout << "Found shortest path" << std::endl;
+			std::cout << "Found shortest path: " << std::endl;
 			return true;
 		}
-		std::sort(openList.begin(), openList.end(), openListSort);
-		currentNode->lastNode = openList.back().first;
 	}
 }
 
@@ -107,11 +123,8 @@ bool AStar::nodeInOpenList(Node* n)
 		{
 			return true;
 		}
-		else 
-		{
-			return false;
-		}
 	}
+	return false;
 }
 
 bool AStar::nodeInClosedList(Node* n)
@@ -122,11 +135,8 @@ bool AStar::nodeInClosedList(Node* n)
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
 	}
+	return false;
 }
 
 void AStar::printPath()

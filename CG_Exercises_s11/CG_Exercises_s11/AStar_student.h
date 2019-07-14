@@ -1,3 +1,16 @@
+/*
+Name: Sebastian Hegmann
+Fakultät : Mathematik und Informatik
+Studiengang : Angewandte Informatik
+Matrikelnummer : 3539941
+
+coauthor :
+	Name : Oliver Mautschke
+	Fakultät : Mathematik und Informatik
+	Studiengang : Angewandte Informatik
+	Matrikelnummer : 3538495
+*/
+
 #include <string>
 #include <vector>
 #include <map>
