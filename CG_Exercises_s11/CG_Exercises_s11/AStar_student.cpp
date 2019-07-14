@@ -97,12 +97,10 @@ bool AStar::computePath()
 				n.second = g + f;	// f: cost function
 
 				auto it = openList.begin();
-				//std::cout << "insesrt: " << n.first->name << std::endl;
 				openList.insert(it, std::make_pair(n.first, n.second));
-
-				//printOpenList();
 			}
 		}
+		printOpenList();
 		closeList.push_back(currentNode);
 		openList.pop_back();
 		std::sort(openList.begin(), openList.end(), openListSort);
